@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>REGP Reading</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Using standard Script tag for Firebase Compatibility -->
-    <script type="module" src="app.js"></script>
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
 
     <div id="app-container">
-        <!-- 1. AUTH SCREEN (Sparx Style) -->
+        <!-- 1. AUTH SCREEN -->
         <section id="auth-screen" class="auth-card">
             <div class="card-header"><p>You are logging into: <strong>REGP Reading</strong></p></div>
             <div class="card-body">
@@ -34,20 +32,18 @@
             </div>
         </section>
 
-        <!-- 2. STUDENT MAIN DASHBOARD (Sparx Style) -->
+        <!-- 2. STUDENT MAIN DASHBOARD -->
         <section id="student-dashboard" class="main-layout" style="display:none;">
-            <!-- Top Navbar -->
             <nav class="top-nav">
                 <div class="logo">REGP Reader</div>
                 <div class="user-stats">
                     <span id="stat-points">0 SRP</span>
                     <span id="stat-name">User Name</span>
-                    <button onclick="location.reload()" class="logout-mini">Logout</button>
+                    <button onclick="logoutUser()" class="logout-mini">Logout</button>
                 </div>
             </nav>
 
             <div class="content-wrapper">
-                <!-- Sidebar -->
                 <aside class="sidebar">
                     <button class="nav-item active" data-target="home-content">🏠 Home</button>
                     <button class="nav-item" data-target="library-content">📚 Library</button>
@@ -55,7 +51,6 @@
                     <button class="nav-item" id="settings-btn-sidebar">⚙️ Settings</button>
                 </aside>
 
-                <!-- Main Content Area -->
                 <main class="dashboard-content">
                     <div id="home-content" class="tab-content">
                         <div class="task-card-hero">
@@ -71,7 +66,7 @@
                             <div class="book-row">
                                 <div class="book-placeholder">📖</div>
                                 <div class="book-info">
-                                    <p class="b-title">No book selected</p>
+                                    <p class="b-title" id="current-book-display">No book selected</p>
                                     <button class="start-btn">Start reading</button>
                                 </div>
                             </div>
@@ -91,7 +86,7 @@
             </div>
         </section>
 
-        <!-- 3. ADMIN PANEL (The "Library Edit" mode) -->
+        <!-- 3. ADMIN PANEL -->
         <section id="admin-panel" class="screen" style="display:none;">
             <div class="admin-box">
                 <h2>Admin: Add New Book</h2>
@@ -109,5 +104,6 @@
         </section>
     </div>
 
+    <script type="module" src="app.js"></script>
 </body>
 </html>
