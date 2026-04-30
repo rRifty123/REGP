@@ -3,28 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REGP - Login</title>
+    <title>REGP Reading</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Using standard Script tag for Firebase Compatibility -->
+    <script type="module" src="app.js"></script>
 </head>
 <body>
 
     <div id="app-container">
-        <!-- Login/Signup Card -->
+        <!-- 1. AUTH SCREEN (Sparx Style) -->
         <section id="auth-screen" class="auth-card">
-            <div class="card-header">
-                <p>You are logging into: <strong>REGP Reading</strong></p>
-            </div>
-            
+            <div class="card-header"><p>You are logging into: <strong>REGP Reading</strong></p></div>
             <div class="card-body">
                 <h2>Log in as a student or teacher</h2>
-                
-                <!-- Teacher Shortcut -->
-                <button id="teacher-mode-btn" class="microsoft-btn">
-                    <span class="icon">🏫</span> Log in / Sign up as a Teacher
-                </button>
-
+                <button id="teacher-mode-btn" class="microsoft-btn">🏫 Log in / Sign up as a Teacher</button>
                 <div class="separator"><span>or</span></div>
-
                 <h3>Use your REGP login</h3>
                 <div class="input-group">
                     <label>Email:</label>
@@ -34,34 +27,87 @@
                     <label>Password:</label>
                     <input type="password" id="password" placeholder="Password">
                 </div>
-
                 <button id="login-btn" class="login-main-btn">Log in</button>
-
                 <div class="card-footer">
-                    <a href="#" id="signup-student-link">New student?</a> | <a href="#">Forgot login details?</a>
+                    <a href="#" id="signup-student-link">New student?</a>
                 </div>
             </div>
         </section>
 
-        <!-- Hidden Admin / Dashboards (Simplified for logic) -->
-        <section id="student-dashboard" style="display:none;">
-            <h1>Student Dashboard</h1>
-            <button onclick="location.reload()">Logout</button>
-            <button id="settings-btn" style="opacity:0.1">Secret</button>
+        <!-- 2. STUDENT MAIN DASHBOARD (Sparx Style) -->
+        <section id="student-dashboard" class="main-layout" style="display:none;">
+            <!-- Top Navbar -->
+            <nav class="top-nav">
+                <div class="logo">REGP Reader</div>
+                <div class="user-stats">
+                    <span id="stat-points">0 SRP</span>
+                    <span id="stat-name">User Name</span>
+                    <button onclick="location.reload()" class="logout-mini">Logout</button>
+                </div>
+            </nav>
+
+            <div class="content-wrapper">
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <button class="nav-item active" data-target="home-content">🏠 Home</button>
+                    <button class="nav-item" data-target="library-content">📚 Library</button>
+                    <button class="nav-item" data-target="leaderboard-content">🏆 Leaderboard</button>
+                    <button class="nav-item" id="settings-btn-sidebar">⚙️ Settings</button>
+                </aside>
+
+                <!-- Main Content Area -->
+                <main class="dashboard-content">
+                    <div id="home-content" class="tab-content">
+                        <div class="task-card-hero">
+                            <div class="hero-text">
+                                <h3>Current task</h3>
+                                <p>Complete your weekly reading goal to earn bonus points!</p>
+                                <button class="continue-btn">Continue reading</button>
+                            </div>
+                            <div class="progress-circle">100%</div>
+                        </div>
+                        <div class="latest-book-card">
+                            <h4>Latest book</h4>
+                            <div class="book-row">
+                                <div class="book-placeholder">📖</div>
+                                <div class="book-info">
+                                    <p class="b-title">No book selected</p>
+                                    <button class="start-btn">Start reading</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="library-content" class="tab-content" style="display:none;">
+                        <h3>Available Books</h3>
+                        <div id="book-grid"></div>
+                    </div>
+
+                    <div id="leaderboard-content" class="tab-content" style="display:none;">
+                        <h3>All Time Leaderboard</h3>
+                        <ol id="leaderboard-list"></ol>
+                    </div>
+                </main>
+            </div>
         </section>
 
-        <section id="teacher-dashboard" style="display:none;">
-            <h1>Teacher Dashboard</h1>
-            <button onclick="location.reload()">Logout</button>
-        </section>
-        
-        <section id="admin-panel" style="display:none;">
-            <h1>Admin Panel</h1>
-            <button onclick="location.reload()">Back</button>
+        <!-- 3. ADMIN PANEL (The "Library Edit" mode) -->
+        <section id="admin-panel" class="screen" style="display:none;">
+            <div class="admin-box">
+                <h2>Admin: Add New Book</h2>
+                <input type="text" id="new-book-title" placeholder="Book Title">
+                <textarea id="section-text" placeholder="Write book content here..."></textarea>
+                <div class="q-grid">
+                    <input type="text" class="q-in" placeholder="Question 1">
+                    <input type="text" class="q-in" placeholder="Question 2">
+                    <input type="text" class="q-in" placeholder="Question 3">
+                    <input type="text" class="q-in" placeholder="Question 4">
+                </div>
+                <button id="save-book-btn">Upload to Library</button>
+                <button onclick="location.reload()">Exit Admin</button>
+            </div>
         </section>
     </div>
 
-    <!-- Scripts at the bottom to ensure buttons are loaded -->
-    <script type="module" src="app.js"></script>
 </body>
 </html>
