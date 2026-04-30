@@ -1,0 +1,90 @@
+body {
+    background-color: #f4f4f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.auth-card {
+    background: white;
+    width: 400px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.card-header {
+    background: #fafafa;
+    padding: 10px 20px;
+    border-bottom: 1px solid #eee;
+    font-size: 0.8rem;
+}
+
+.card-body {
+    padding: 30px;
+    text-align: center;
+}
+
+h2 { color: #333; font-size: 1.4rem; margin-bottom: 25px; }
+
+.microsoft-btn {
+    background: #3c247b; /* Deep purple like Sparx */
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 12px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.separator {
+    margin: 20px 0;
+    position: relative;
+    border-bottom: 1px solid #ddd;
+}
+.separator span {
+    background: white;
+    position: absolute;
+    top: -10px;
+    left: 45%;
+    padding: 0 10px;
+    color: #888;
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.input-group label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.9rem; }
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.login-main-btn {
+    background: #dcd6f7; /* Light purple */
+    color: #3c247b;
+    border: none;
+    width: 100%;
+    padding: 12px;
+    border-radius: 25px;
+    font-weight: bold;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.card-footer { margin-top: 20px; font-size: 0.85rem; }
+.card-footer a { color: #3c247b; text-decoration: underline; cursor: pointer; }
