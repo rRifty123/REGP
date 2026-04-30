@@ -9,7 +9,7 @@
 <body>
 
     <div id="app-container">
-        <!-- 1. AUTH SCREEN -->
+        <!-- AUTH SCREEN -->
         <section id="auth-screen" class="auth-card">
             <div class="card-header"><p>You are logging into: <strong>REGP Reading</strong></p></div>
             <div class="card-body">
@@ -32,14 +32,15 @@
             </div>
         </section>
 
-        <!-- 2. STUDENT MAIN DASHBOARD -->
+        <!-- STUDENT MAIN DASHBOARD -->
         <section id="student-dashboard" class="main-layout" style="display:none;">
             <nav class="top-nav">
                 <div class="logo">REGP Reader</div>
                 <div class="user-stats">
-                    <span id="stat-points">0 SRP</span>
+                    <!-- Updated to REGPoints -->
+                    <span id="stat-points">0 REGPoints</span>
                     <span id="stat-name">User Name</span>
-                    <button onclick="logoutUser()" class="logout-mini">Logout</button>
+                    <button id="logout-btn-header" class="logout-mini">Logout</button>
                 </div>
             </nav>
 
@@ -56,10 +57,10 @@
                         <div class="task-card-hero">
                             <div class="hero-text">
                                 <h3>Current task</h3>
-                                <p>Complete your weekly reading goal to earn bonus points!</p>
+                                <p>Complete your weekly reading goal to earn bonus REGPoints!</p>
                                 <button class="continue-btn">Continue reading</button>
                             </div>
-                            <div class="progress-circle">100%</div>
+                            <div class="progress-circle">0%</div>
                         </div>
                         <div class="latest-book-card">
                             <h4>Latest book</h4>
@@ -75,7 +76,8 @@
                     
                     <div id="library-content" class="tab-content" style="display:none;">
                         <h3>Available Books</h3>
-                        <div id="book-grid"></div>
+                        <!-- This is where published books appear -->
+                        <div id="book-grid" class="book-grid-container"></div>
                     </div>
 
                     <div id="leaderboard-content" class="tab-content" style="display:none;">
@@ -86,20 +88,21 @@
             </div>
         </section>
 
-        <!-- 3. ADMIN PANEL -->
+        <!-- ADMIN PANEL -->
         <section id="admin-panel" class="screen" style="display:none;">
             <div class="admin-box">
                 <h2>Admin: Add New Book</h2>
                 <input type="text" id="new-book-title" placeholder="Book Title">
                 <textarea id="section-text" placeholder="Write book content here..."></textarea>
                 <div class="q-grid">
+                    <p style="font-size: 0.8rem; color: #666;">(Correct answers are the first option for this version)</p>
                     <input type="text" class="q-in" placeholder="Question 1">
                     <input type="text" class="q-in" placeholder="Question 2">
                     <input type="text" class="q-in" placeholder="Question 3">
                     <input type="text" class="q-in" placeholder="Question 4">
                 </div>
                 <button id="save-book-btn">Upload to Library</button>
-                <button onclick="location.reload()">Exit Admin</button>
+                <button id="admin-exit-btn">Exit Admin</button>
             </div>
         </section>
     </div>
