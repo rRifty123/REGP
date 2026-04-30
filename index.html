@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REGP - Reading App</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Firebase SDKs -->
+    <script type="module" src="app.js"></script>
+</head>
+<body>
+
+    <div id="app">
+        <!-- Auth Screen -->
+        <section id="auth-screen" class="screen">
+            <h1>REGP</h1>
+            <input type="email" id="email" placeholder="Email">
+            <input type="password" id="password" placeholder="Password">
+            <button id="login-btn">Login</button>
+            <button id="signup-btn">Sign Up as Student</button>
+            <hr>
+            <button id="teacher-mode-btn" class="secondary">I'm a Teacher</button>
+        </section>
+
+        <!-- Student Dashboard -->
+        <section id="student-dashboard" class="screen" style="display:none;">
+            <h2>Welcome, <span id="user-display-name"></span></h2>
+            <p>Your Points: <span id="user-points">0</span></p>
+            <div id="book-list"></div>
+            <button onclick="showSettings()">Settings</button>
+        </section>
+
+        <!-- Teacher Dashboard -->
+        <section id="teacher-dashboard" class="screen" style="display:none;">
+            <h2>Teacher Panel</h2>
+            <div class="teacher-tools">
+                <input type="text" id="search-student" placeholder="Enter student email...">
+                <button id="add-student-btn">Add to Class</button>
+            </div>
+            <h3>My Class Progress</h3>
+            <div id="class-list"></div>
+        </section>
+
+        <!-- Reading Screen -->
+        <section id="reading-screen" class="screen" style="display:none;">
+            <h2 id="reading-title"></h2>
+            <div id="section-content"></div>
+            <button id="read-section-btn">I have read this section</button>
+        </section>
+
+        <!-- Quiz Screen -->
+        <section id="quiz-screen" class="screen" style="display:none;">
+            <h3>Quick Check</h3>
+            <div id="quiz-container"></div>
+            <button id="submit-quiz">Submit Answers</button>
+        </section>
+
+        <!-- Admin Panel (Hidden) -->
+        <section id="admin-panel" class="screen" style="display:none;">
+            <h2>Admin: Create New Book</h2>
+            <input type="text" id="new-book-title" placeholder="Book Title">
+            <input type="number" id="new-book-points" placeholder="Points for passing">
+            <div id="section-creator">
+                <textarea id="section-text" placeholder="Type section content here..."></textarea>
+                <div id="question-inputs">
+                    <p>Enter 4 questions (Correct answer is always the first option for simplicity in this demo):</p>
+                    <input type="text" class="q-input" placeholder="Question 1">
+                    <input type="text" class="q-input" placeholder="Question 2">
+                    <input type="text" class="q-input" placeholder="Question 3">
+                    <input type="text" class="q-input" placeholder="Question 4">
+                </div>
+            </div>
+            <button id="save-book-btn">Add Book to Library</button>
+            <button onclick="location.reload()">Exit Admin</button>
+        </section>
+
+        <!-- Settings Tab -->
+        <div id="settings-modal" style="display:none;">
+            <button id="admin-trigger" style="opacity: 0.1;">Secret</button>
+            <button onclick="logout()">Logout</button>
+            <button onclick="closeSettings()">Close</button>
+        </div>
+    </div>
+
+</body>
+</html>
