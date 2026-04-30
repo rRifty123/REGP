@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -15,8 +15,12 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// DEBUG LOG
-console.log("REGP App Logic Loaded");
+// GLOBAL LOGOUT
+window.logoutUser = () => {
+    signOut(auth).then(() => {
+        showScreen('auth-screen');
+    }).catch(e => console.error("Logout error", e));
+};
 
 function showScreen(id) {
     document.getElementById('auth-screen').style.display = (id === 'auth-screen') ? 'block' : 'none';
@@ -26,23 +30,46 @@ function showScreen(id) {
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- LOGIN BUTTON FIX ---
-    const loginBtn = document.getElementById('login-btn');
-    if(loginBtn) {
-        loginBtn.onclick = () => {
-            const email = document.getElementById('email').value;
-            const pass = document.getElementById('password').value;
-            signInWithEmailAndPassword(auth, email, pass).catch(e => alert(e.message));
-        };
-    }
+    // LOGIN
+    document.getElementById('login-btn').onclick = () => {
+        const email = document.getElementById('email').value;
+        const pass = document.getElementById('password').value;
+        if(!email || !pass) return alert("Please fill in all fields");
+        signInWithEmailAndPassword(auth, email, pass).catch(e => alert("Login Error: " + e.message));
+    };
 
-    // --- SIDEBAR TAB NAVIGATION ---
-    const navItems = document.querySelectorAll('.nav-item');
-    navItems.forEach(item => {
+    // STUDENT SIGNUP
+    document.getElementById('signup-student-link').onclick = async (e) => {
+        e.preventDefault();
+        const email = prompt("Enter Student Email:");
+        const pass = prompt("Create Password (min 6 characters):");
+        if(email && pass) {
+            try {
+                const res = await createUserWithEmailAndPassword(auth, email, pass);
+                await setDoc(doc(db, "users", res.user.uid), { role: 'student', points: 0, email: email });
+                alert("Account created! Please log in.");
+            } catch(err) { alert(err.message); }
+        }
+    };
+
+    // TEACHER SIGNUP
+    document.getElementById('teacher-mode-btn').onclick = async () => {
+        const email = prompt("Teacher Email:");
+        const pass = prompt("Teacher Password:");
+        if(email && pass) {
+            try {
+                const res = await createUserWithEmailAndPassword(auth, email, pass);
+                await setDoc(doc(db, "users", res.user.uid), { role: 'teacher', email: email });
+                alert("Teacher account created!");
+            } catch(err) { alert(err.message); }
+        }
+    };
+
+    // TAB NAVIGATION
+    document.querySelectorAll('.nav-item').forEach(item => {
         item.onclick = () => {
-            navItems.forEach(i => i.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
             item.classList.add('active');
-            
             const target = item.getAttribute('data-target');
             if(target) {
                 document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
@@ -51,52 +78,32 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
 
-    // --- SECRET ADMIN BUTTON IN SIDEBAR ---
-    const setBtn = document.getElementById('settings-btn-sidebar');
-    setBtn.onclick = () => {
-        const code = prompt("Enter Admin Code:");
-        if (code === "080112") showScreen('admin-panel');
+    // ADMIN TRIGGER
+    document.getElementById('settings-btn-sidebar').onclick = () => {
+        if (prompt("Enter Admin Code:") === "080112") showScreen('admin-panel');
     };
 
-    // --- TEACHER SIGNUP ---
-    document.getElementById('teacher-mode-btn').onclick = async () => {
-        const email = prompt("Teacher Email:");
-        const pass = prompt("Password:");
-        if(email && pass) {
-            const res = await createUserWithEmailAndPassword(auth, email, pass);
-            await setDoc(doc(db, "users", res.user.uid), { role: 'teacher', email: email });
-            alert("Teacher created!");
-        }
-    };
-    
-    // --- STUDENT SIGNUP ---
-    document.getElementById('signup-student-link').onclick = async () => {
-        const email = prompt("Student Email:");
-        const pass = prompt("Password:");
-        if(email && pass) {
-            const res = await createUserWithEmailAndPassword(auth, email, pass);
-            await setDoc(doc(db, "users", res.user.uid), { role: 'student', points: 0, email: email });
-            alert("Student created!");
-        }
-    };
-
-    // --- SAVE BOOK ---
+    // SAVE BOOK
     document.getElementById('save-book-btn').onclick = async () => {
         const title = document.getElementById('new-book-title').value;
         const text = document.getElementById('section-text').value;
         const qs = Array.from(document.querySelectorAll('.q-in')).map(i => i.value);
-        await addDoc(collection(db, "books"), { title, text, questions: qs });
-        alert("Book Added to Library!");
+        if(!title || !text) return alert("Fill in title and content");
+        try {
+            await addDoc(collection(db, "books"), { title, text, questions: qs });
+            alert("Book added to Library!");
+            location.reload();
+        } catch(e) { alert(e.message); }
     };
 });
 
-// --- AUTH STATE ---
+// AUTH LISTENER
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         const snap = await getDoc(doc(db, "users", user.uid));
         if (snap.exists()) {
             showScreen('student-dashboard');
-            document.getElementById('stat-name').innerText = snap.data().email;
+            document.getElementById('stat-name').innerText = user.email;
             document.getElementById('stat-points').innerText = (snap.data().points || 0) + " SRP";
         }
     } else {
